@@ -66,6 +66,16 @@ defmodule GoogleMaps.Request do
     {:waypoints, "optimize:true|#{waypoints}"}
   end
 
+  defp transform_param({:waypoints_fixed, waypoints})
+  when is_list(waypoints) do
+    transform_param({:waypoints_fixed, Enum.join(waypoints, "|")})
+  end
+
+  defp transform_param({:waypoints_fixed, waypoints}) do
+    # @TODO: Encode the waypoints into encoded polyline.
+    {:waypoints, "optimize:false|#{waypoints}"}
+  end
+
   defp transform_param(param), do: param
 
   defp format_headers({:ok, %{headers: headers} = response}) do
